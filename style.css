@@ -1,0 +1,31 @@
+#quarterCircleBottomLeft{
+    border-bottom-left-radius: 200px;
+    width: 100px;
+    height: 100px;  
+    background-color: yellow
+}
+
+#quarterCircleBottomRight{
+    border-bottom-right-radius: 200px;
+    width:100px;
+    height:100px;
+    background-color: blue
+}
+
+#quarterCircleTopRight{
+    border-top-right-radius: 200px;
+    width:100px;
+    height:100px;
+    background-color:red;
+}
+
+#quarterCicleTopLeft{
+    border-top-left-radius: 200px;
+    width:100px;
+    height:100px;
+    background-color: green;
+}
+
+.formatPanel{
+    display: inline-block;
+}
