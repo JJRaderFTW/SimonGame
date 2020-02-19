@@ -82,4 +82,5 @@ body{
 .active{
     transform: scale(1.02);
     border: rgba(255, 217, 0, 0.733) 5px solid;
+    color: rgb(90, 43, 43);
 }
