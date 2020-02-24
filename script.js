@@ -18,32 +18,27 @@ let fail;
 let litUp;
 let gameTimer;
 let IntervalId;
-let buttonContent = startButton.innerHTML
+// let buttonContent = startButton.innerHTML;
 
 
-startButton.addEventListener("click", function () {
-    startGame();
-    if (buttonContent === "Start") {
-        setStop();
+function flip(){
+    if (document.getElementById("startButton").innerHTML === "Start") {
+        document.getElementById("startButton").innerHTML = "Stop";
+        startGame();
     }
-    else if (buttonContent === "Stop") {
-        setStart();
+    else if (document.getElementById("startButton").innerHTML === "Stop") {
+        document.getElementById("startButton").innerHTML = "Start";
+        clearInterval(IntervalId);
+        clearColor();
     }
-});
+};
 
-function setStop() {
-    startButton.innerHTML = "Stop";
-}
-
-function setStart() {
-    start.Button.innerHTML = "Start";
-    clearInterval(IntervalId);
-}
 
 function startGame() {
     order = [];
-    playerOrder = []
+    playerOrder = [];
     litUp = 0;
+    IntervalId = 0;
     currentTurn = 1;
     successs = false;
     fail = false;
@@ -54,25 +49,25 @@ function startGame() {
         order.push(Math.floor(Math.random() * 4 + 1));
     }
 
-    setInterval(compTurn, 1000);
+    setInterval(compTurn, 800);
 }
 
 //When its the computer's turn and shows you the pattern to follow
 function compTurn() {
-    if (!playerTurn) {
+    if (!playerTurn && document.getElementById("startButton").innerHTML === "Stop") {
         clearColor();
         setTimeout(function () {
             if (order[litUp] === 1) {
-               one();
+                topRight.classList.add("active");
             }
             if (order[litUp] === 2) {
-               two(); 
+                topLeft.classList.add("active");
             }
             if (order[litUp] === 3) {
-                three();
+                bottomLeft.classList.add("active");
             }
             if (order[litUp] === 4) {
-               four()
+                bottomRight.classList.add("active");
             }
             litUp++;
         }, 200)
@@ -84,16 +79,33 @@ function compTurn() {
 
 }
 
-//Lights up the panels
-function one() {
-    topRight.classList.add("active");
+function clearColor(){
+if (bottomRight.classList.contains("active")){
+    bottomRight.classList.remove("active")
 }
-function two(){
-    topLeft.classList.add("active");
+if (bottomLeft.classList.contains("active")){
+    bottomLeft.classList.remove("active")
 }
-function three(){
-    bottomLeft.classList.add("active");
+if (topRight.classList.contains("active")){
+    topRight.classList.remove("active")
 }
-function four(){
-   bottomRight.classList.add("active");
+if (topLeft.classList.contains("active")){
+    topLeft.classList.remove("active")
 }
+
+
+}
+
+// //Lights up the panels
+// function one() {
+//     topRight.classList.add("active");
+// }
+// function two(){
+//     topLeft.classList.add("active");
+// }
+// function three(){
+//     bottomLeft.classList.add("active");
+// }
+// function four(){
+//    bottomRight.classList.add("active");
+// }
