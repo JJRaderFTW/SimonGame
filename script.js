@@ -1,5 +1,4 @@
 //Declaring the different colored panels
-
 const topRight = document.getElementById("quarterCircleTopRight");
 const topLeft = document.getElementById("quarterCicleTopLeft");
 const bottomRight = document.getElementById("quarterCircleBottomRight");
@@ -7,7 +6,6 @@ const bottomLeft = document.getElementById("quarterCircleBottomLeft");
 const startButton = document.getElementById("startButton");
 
 //Declaring the variables that will be used through the game
-
 let start
 let order = [];
 let playerOrder = []
@@ -18,10 +16,11 @@ let fail;
 let litUp;
 let gameTimer;
 let IntervalId;
+let check;
 // let buttonContent = startButton.innerHTML;
 
-
-function flip(){
+//Turn Start switch on and off
+function flip() {
     if (document.getElementById("startButton").innerHTML === "Start") {
         document.getElementById("startButton").innerHTML = "Stop";
         startGame();
@@ -33,7 +32,7 @@ function flip(){
     }
 };
 
-
+//Begin the game
 function startGame() {
     order = [];
     playerOrder = [];
@@ -59,15 +58,19 @@ function compTurn() {
         setTimeout(function () {
             if (order[litUp] === 1) {
                 topRight.classList.add("active");
+                topRight.style.backgroundColor = "white"
             }
             if (order[litUp] === 2) {
                 topLeft.classList.add("active");
+                topLeft.style.backgroundColor = "white"
             }
             if (order[litUp] === 3) {
                 bottomLeft.classList.add("active");
+                bottomLeft.style.backgroundColor = "white"
             }
             if (order[litUp] === 4) {
                 bottomRight.classList.add("active");
+                bottomRight.style.backgroundColor = "white";
             }
             litUp++;
         }, 200)
@@ -77,35 +80,71 @@ function compTurn() {
         playerTurn = true;
     }
 
+    if (playerTurn) {
+        clearInterval(IntervalId);
+        clearColor();
+        topRight.addEventListener("click", function () {
+            playerOrder.push(1);
+            check();
+            topRight.style.backgroundColor = "white"
+            topRight.classList.add("active");
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        })
+        topLeft.addEventListener("click", function () {
+            playerOrder.push(2);
+            check();
+            topLeft.style.backgroundColor = "white"
+            topLeft.classList.add("active");
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        })
+        bottomLeft.addEventListener("click", function () {
+            playerOrder.push(3);
+            check();
+            bottomLeft.style.backgroundColor = "white"
+            bottomLeft.classList.add("active");
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        })
+        bottomRight.addEventListener("click", function () {
+            playerOrder.push(4);
+            check();
+            bottomRight.style.backgroundColor = "white"
+            bottomRight.classList.add("active");
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        })
+
+    }
 }
 
-function clearColor(){
-if (bottomRight.classList.contains("active")){
-    bottomRight.classList.remove("active")
-}
-if (bottomLeft.classList.contains("active")){
-    bottomLeft.classList.remove("active")
-}
-if (topRight.classList.contains("active")){
-    topRight.classList.remove("active")
-}
-if (topLeft.classList.contains("active")){
-    topLeft.classList.remove("active")
+//removes the active class and white color from the computer's turn
+function clearColor() {
+    if (bottomRight.classList.contains("active")) {
+        bottomRight.classList.remove("active")
+        bottomRight.style.backgroundColor = "blue";
+    }
+    if (bottomLeft.classList.contains("active")) {
+        bottomLeft.classList.remove("active")
+        bottomLeft.style.backgroundColor = "yellow"
+    }
+    if (topRight.classList.contains("active")) {
+        topRight.classList.remove("active")
+        topRight.style.backgroundColor = "red"
+    }
+    if (topLeft.classList.contains("active")) {
+        topLeft.classList.remove("active")
+        topLeft.style.backgroundColor = "green"
+    }
 }
 
-
+function check(){
+    if(playerOrder[playerOrder.length-1] != order[order.length-1]){
+        fail = true;
+    }
 }
-
-// //Lights up the panels
-// function one() {
-//     topRight.classList.add("active");
-// }
-// function two(){
-//     topLeft.classList.add("active");
-// }
-// function three(){
-//     bottomLeft.classList.add("active");
-// }
-// function four(){
-//    bottomRight.classList.add("active");
-// }
