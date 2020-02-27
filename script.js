@@ -7,6 +7,7 @@ const startButton = document.getElementById("startButton");
 
 //Declaring the variables that will be used through the game
 let start
+let win;
 let order = [];
 let playerOrder = []
 let success;
@@ -16,7 +17,7 @@ let fail;
 let litUp;
 let gameTimer;
 let IntervalId;
-let check;
+
 // let buttonContent = startButton.innerHTML;
 
 //Turn Start switch on and off
@@ -39,14 +40,15 @@ function startGame() {
     litUp = 0;
     IntervalId = 0;
     currentTurn = 1;
-    successs = false;
+    successs = true;
     fail = false;
-    playerTurn = false;
+    win = false;
 
     //generates order of pattern
-    for (i = 0; i < 15; i++) {
+    for (i = 0; i < 20; i++) {
         order.push(Math.floor(Math.random() * 4 + 1));
     }
+    playerTurn = false;
 
     setInterval(compTurn, 800);
 }
@@ -72,56 +74,75 @@ function compTurn() {
                 bottomRight.classList.add("active");
                 bottomRight.style.backgroundColor = "white";
             }
-            litUp++;
         }, 200)
+        litUp++;
     }
     if (currentTurn === litUp) {
         clearInterval(IntervalId);
         playerTurn = true;
-    }
-
-    if (playerTurn) {
-        clearInterval(IntervalId);
         clearColor();
-        topRight.addEventListener("click", function () {
-            playerOrder.push(1);
-            check();
-            topRight.style.backgroundColor = "white"
-            topRight.classList.add("active");
-            setTimeout(function () {
-                clearColor();
-            }, 300)
-        })
-        topLeft.addEventListener("click", function () {
-            playerOrder.push(2);
-            check();
-            topLeft.style.backgroundColor = "white"
-            topLeft.classList.add("active");
-            setTimeout(function () {
-                clearColor();
-            }, 300)
-        })
-        bottomLeft.addEventListener("click", function () {
-            playerOrder.push(3);
-            check();
-            bottomLeft.style.backgroundColor = "white"
-            bottomLeft.classList.add("active");
-            setTimeout(function () {
-                clearColor();
-            }, 300)
-        })
-        bottomRight.addEventListener("click", function () {
-            playerOrder.push(4);
-            check();
-            bottomRight.style.backgroundColor = "white"
-            bottomRight.classList.add("active");
-            setTimeout(function () {
-                clearColor();
-            }, 300)
-        })
-
     }
+
+
+
+
+
 }
+
+topRight.addEventListener("click", function () {
+    if (playerTurn) {
+        playerOrder.push(1);
+        check();
+        topRight.style.backgroundColor = "white"
+        topRight.classList.add("active");
+        if (!win) {
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        }
+    }
+})
+
+topLeft.addEventListener("click", function () {
+    if (playerTurn) {
+        playerOrder.push(2);
+        check();
+        topLeft.style.backgroundColor = "white"
+        topLeft.classList.add("active");
+        if (!win) {
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        }
+    }
+})
+bottomLeft.addEventListener("click", function () {
+    if (playerTurn) {
+        playerOrder.push(3);
+        check();
+        bottomLeft.style.backgroundColor = "white"
+        bottomLeft.classList.add("active");
+        if (!win) {
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        }
+    }
+})
+
+bottomRight.addEventListener("click", function () {
+    if (playerTurn) {
+        playerOrder.push(4);
+        check();
+        bottomRight.style.backgroundColor = "white"
+        bottomRight.classList.add("active");
+        if (!win) {
+            setTimeout(function () {
+                clearColor();
+            }, 300)
+        }
+    }
+})
 
 //removes the active class and white color from the computer's turn
 function clearColor() {
@@ -143,8 +164,38 @@ function clearColor() {
     }
 }
 
-function check(){
-    if(playerOrder[playerOrder.length-1] != order[order.length-1]){
+function check() {
+    //gets soemthing wrong
+    if (playerOrder[playerOrder.length - 1] != order[order.length - 1]) {
+        console.log(fail);
         fail = true;
+        console.log(fail);
     }
+
+    //Gets something correct
+    if (currentTurn === playerOrder.length && fail === false) {
+        console.log(fail);
+
+        currentTurn++;
+        playerOrder = []
+        litUp = 0;
+        playerTurn = false;
+        IntervalId = setInterval(compTurn, 800);
+        console.log("Yes")
+    }
+
+    //Wins the game
+    if (playerOrder.length === 20 && !fail) {
+        alert("You Win");
+    }
+
+    //Fail the game
+    if (fail === true) {
+        console.log("NO")
+        setTimeout(() => {
+            clearColor();
+        }, 800)
+        startGame();
+    }
+
 }
