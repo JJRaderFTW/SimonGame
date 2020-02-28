@@ -6,17 +6,16 @@ const bottomLeft = document.getElementById("quarterCircleBottomLeft");
 const startButton = document.getElementById("startButton");
 
 //Declaring the variables that will be used through the game
-let start
-let win;
 let order = [];
 let playerOrder = []
-let success;
-let currentTurn;
-let playerTurn;
-let fail;
 let litUp;
-let gameTimer;
+let currentTurn;
+let success;
+let playerTurn;
 let IntervalId;
+let win;
+let fail;
+let gameTimer;
 
 // let buttonContent = startButton.innerHTML;
 
@@ -37,12 +36,12 @@ function flip() {
 function startGame() {
     order = [];
     playerOrder = [];
+    win = false;
     litUp = 0;
     IntervalId = 0;
     currentTurn = 1;
     successs = true;
     fail = false;
-    win = false;
 
     //generates order of pattern
     for (i = 0; i < 20; i++) {
@@ -50,30 +49,30 @@ function startGame() {
     }
     playerTurn = false;
 
-    setInterval(compTurn, 800);
+    IntervalId = setInterval(compTurn, 800);
 }
 
 //When its the computer's turn and shows you the pattern to follow
 function compTurn() {
-    if (!playerTurn && document.getElementById("startButton").innerHTML === "Stop") {
+    if (!playerTurn) {
         clearColor();
         setTimeout(function () {
             if (order[litUp] === 1) {
                 topRight.classList.add("active");
                 topRight.style.backgroundColor = "white"
-            }
+            };
             if (order[litUp] === 2) {
                 topLeft.classList.add("active");
                 topLeft.style.backgroundColor = "white"
-            }
+            };
             if (order[litUp] === 3) {
                 bottomLeft.classList.add("active");
                 bottomLeft.style.backgroundColor = "white"
-            }
+            };
             if (order[litUp] === 4) {
                 bottomRight.classList.add("active");
                 bottomRight.style.backgroundColor = "white";
-            }
+            };
         }, 200)
         litUp++;
     }
@@ -82,11 +81,6 @@ function compTurn() {
         playerTurn = true;
         clearColor();
     }
-
-
-
-
-
 }
 
 topRight.addEventListener("click", function () {
@@ -98,7 +92,7 @@ topRight.addEventListener("click", function () {
         if (!win) {
             setTimeout(function () {
                 clearColor();
-            }, 300)
+            }, 300);
         }
     }
 })
@@ -166,36 +160,34 @@ function clearColor() {
 
 function check() {
     //gets soemthing wrong
-    if (playerOrder[playerOrder.length - 1] != order[order.length - 1]) {
-        console.log(fail);
-        fail = true;
-        console.log(fail);
+    if (playerOrder[playerOrder.length - 1] !== order[playerOrder.length - 1]) {
+        console.log(success);
+        success = false;
+        console.log(success);
     }
 
     //Gets something correct
-    if (currentTurn === playerOrder.length && fail === false) {
-        console.log(fail);
-
+    if (currentTurn === playerOrder.length && success && !win) {
         currentTurn++;
         playerOrder = []
         litUp = 0;
         playerTurn = false;
-        IntervalId = setInterval(compTurn, 800);
+        intervalId = setInterval(compTurn, 800);
         console.log("Yes")
     }
 
     //Wins the game
-    if (playerOrder.length === 20 && !fail) {
+    if (playerOrder.length === 20 && success === true) {
         alert("You Win");
     }
 
     //Fail the game
-    if (fail === true) {
+    if (success === false) {
         console.log("NO")
         setTimeout(() => {
             clearColor();
+            startGame();
         }, 800)
-        startGame();
     }
 
 }
