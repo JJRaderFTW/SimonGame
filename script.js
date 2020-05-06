@@ -1,3 +1,4 @@
+//Inspiration and guidelines for this project came from Youtube video using link: https://www.youtube.com/watch?v=n_ec3eowFLQ
 //Declaring the different colored panels
 const topRight = document.getElementById("quarterCircleTopRight");
 const topLeft = document.getElementById("quarterCicleTopLeft");
@@ -9,13 +10,14 @@ const startButton = document.getElementById("startButton");
 let order = [];
 let playerOrder = []
 let litUp;
-let currentTurn;
+// let gameTurn;
 let success;
-let playerTurn;
+let compTurn;
 let IntervalId;
 let win;
 let fail;
 let gameTimer;
+let playCanMove = false;
 
 // let buttonContent = startButton.innerHTML;
 
@@ -23,20 +25,23 @@ let gameTimer;
 function flip() {
     if (document.getElementById("startButton").innerHTML === "Start") {
         document.getElementById("startButton").innerHTML = "Stop";
+        playCanMove = true;
         startGame();
     }
     else if (document.getElementById("startButton").innerHTML === "Stop") {
         document.getElementById("startButton").innerHTML = "Start";
+        playCanMove = false;
         clearInterval(IntervalId);
         clearColor();
     }
 };
 
-//Begin the game
+
+//Begin the game (Concept borrowed from YT video metioned above)
 function startGame() {
+    win = false;
     order = [];
     playerOrder = [];
-    win = false;
     litUp = 0;
     IntervalId = 0;
     currentTurn = 1;
@@ -47,15 +52,21 @@ function startGame() {
     for (i = 0; i < 20; i++) {
         order.push(Math.floor(Math.random() * 4 + 1));
     }
-    playerTurn = false;
+    compTurn = true;
 
-    IntervalId = setInterval(compTurn, 800);
+    IntervalId = setInterval(gameTurn, 800);
 }
 
 //When its the computer's turn and shows you the pattern to follow
-function compTurn() {
-    if (!playerTurn) {
-        clearColor();
+function gameTurn() {
+    playCanMove = false;
+        if (litUp === currentTurn){
+            clearColor();
+            clearInterval(IntervalId);
+            compTurn = false;
+            playCanMove = true;
+        }
+        if(compTurn === true){
         setTimeout(function () {
             if (order[litUp] === 1) {
                 topRight.classList.add("active");
@@ -73,18 +84,13 @@ function compTurn() {
                 bottomRight.classList.add("active");
                 bottomRight.style.backgroundColor = "white";
             };
-        }, 200)
+        }, 200);
+    }
         litUp++;
     }
-    if (currentTurn === litUp) {
-        clearInterval(IntervalId);
-        playerTurn = true;
-        clearColor();
-    }
-}
 
 topRight.addEventListener("click", function () {
-    if (playerTurn) {
+    if (!compTurn && playCanMove === true) {
         playerOrder.push(1);
         check();
         topRight.style.backgroundColor = "white"
@@ -98,7 +104,7 @@ topRight.addEventListener("click", function () {
 })
 
 topLeft.addEventListener("click", function () {
-    if (playerTurn) {
+    if (!compTurn && playCanMove === true) {
         playerOrder.push(2);
         check();
         topLeft.style.backgroundColor = "white"
@@ -111,7 +117,7 @@ topLeft.addEventListener("click", function () {
     }
 })
 bottomLeft.addEventListener("click", function () {
-    if (playerTurn) {
+    if (!compTurn && playCanMove === true) {
         playerOrder.push(3);
         check();
         bottomLeft.style.backgroundColor = "white"
@@ -125,7 +131,7 @@ bottomLeft.addEventListener("click", function () {
 })
 
 bottomRight.addEventListener("click", function () {
-    if (playerTurn) {
+    if (!compTurn && playCanMove === true) {
         playerOrder.push(4);
         check();
         bottomRight.style.backgroundColor = "white"
@@ -171,8 +177,8 @@ function check() {
         currentTurn++;
         playerOrder = []
         litUp = 0;
-        playerTurn = false;
-        intervalId = setInterval(compTurn, 800);
+        compTurn = true;
+        IntervalId = setInterval(compTurn, 800);
         console.log("Yes")
     }
 
